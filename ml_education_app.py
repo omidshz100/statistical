@@ -576,6 +576,7 @@ def main():
                 """, unsafe_allow_html=True)
         
         with col2:
+            k_value = 5  # Default value
             if model_type == "K-Nearest Neighbors (KNN)":
                 k_value = st.slider(
                     "Select k (number of neighbors):",
