@@ -11,6 +11,207 @@ from sklearn.metrics import confusion_matrix, accuracy_score
 import warnings
 warnings.filterwarnings('ignore')
 
+# ==================== I18N (EN/FA) ====================
+# Basic bilingual support with a small translation dictionary.
+# Fallback is English when a key is missing in Persian.
+TRANSLATIONS = {
+    'en': {
+        'page.title': 'ML Education: Supervised Learning',
+        'nav.title': '📚 Navigation',
+        'nav.intro': 'Introduction',
+        'nav.eda': 'Exploratory Data Analysis',
+        'nav.preproc': 'Data Preprocessing',
+        'nav.model': 'Modeling Sandbox',
+        'nav.eval': 'Evaluation & Interpretation',
+        'lang.label': 'Language',
+        'lang.en': 'English',
+        'lang.fa': 'Persian (فارسی)',
+        'title.main': '🎓 Interactive Machine Learning Education Platform',
+        'subtitle.main': 'Learn Supervised Learning Through Interactive Visualization',
+        'intro.header': '📖 Introduction to Supervised Learning',
+        'intro.supervised.h3': 'What is Supervised Learning?',
+        'intro.supervised.p': 'Supervised Learning is a type of machine learning where we train a model using labeled data. We use known labels to teach a model to predict labels for new, unseen data.',
+        'intro.classification.h3': 'What is Classification?',
+        'intro.classification.p': 'Classification is a supervised learning task for predicting categorical outcomes (like Yes/No). Here, we predict whether a person will subscribe.',
+        'intro.tf': '🎯 Target Variable vs. Features',
+        'intro.target.title': 'Target Variable (Label)',
+        'intro.target.desc': 'The Target Variable is what we want to predict (dependent variable). In our dataset: Subscribed (Yes/No).',
+        'intro.features.title': 'Features (Independent Variables)',
+        'intro.features.desc': 'Features are inputs used to make predictions (independent variables). In our dataset: Age, Income, Education, Gender.',
+        'intro.preview': '📊 Sample Data Preview',
+        'intro.dataset.overview': 'Dataset Overview:',
+        'btn.apply_preproc': '🚀 Apply Preprocessing',
+        'btn.train_model': '🎯 Train Model',
+        'warn.need.preproc': '⚠️ Please complete Data Preprocessing first!',
+        'info.how.preproc': "Navigate to 'Data Preprocessing' section and click 'Apply Preprocessing' button.",
+        'eda.header': '🔍 Exploratory Data Analysis (EDA)',
+        'eda.summary': '📈 Summary Statistics',
+        'eda.numeric': 'Numeric Features',
+        'eda.categorical': 'Categorical Features',
+        'eda.missing.header': '🔴 Missing Values Analysis',
+        'eda.missing.xlabel': 'Percentage Missing (%)',
+        'eda.distributions': '📊 Data Distributions',
+        'tab.numeric': 'Numeric Features',
+        'tab.categorical': 'Categorical Features',
+        'tab.target': 'Target Distribution',
+        'chart.age': 'Age',
+        'chart.income': 'Income',
+        'chart.education': 'Education Level',
+        'chart.gender': 'Gender',
+        'chart.subscribed': 'Subscription Distribution',
+        'metric.subscribed.yes': 'Subscribed (Yes)',
+        'metric.subscribed.no': 'Not Subscribed (No)',
+        'class.balance': 'Class Balance Ratio:',
+        'pre.header': '🔧 Data Preprocessing Demo',
+        'pre.missing': '1️⃣ Handling Missing Values',
+        'pre.numeric': 'Numeric Features',
+        'pre.numeric.radio': 'Imputation strategy for Age & Income:',
+        'pre.numeric.mean': 'Mean Imputation',
+        'pre.numeric.median': 'Median Imputation',
+        'pre.categorical': 'Categorical Features',
+        'pre.categorical.radio': 'Imputation strategy for Education:',
+        'pre.categorical.mode': 'Mode (Most Frequent)',
+        'pre.categorical.unknown': "Placeholder ('Unknown')",
+        'pre.encoding': '2️⃣ Encoding Categorical Variables',
+        'pre.encoding.radio': 'Select encoding method:',
+        'pre.encoding.onehot': 'One-Hot Encoding',
+        'pre.encoding.label': 'Label Encoding',
+        'pre.scaling': '3️⃣ Feature Scaling',
+        'pre.scaling.checkbox': 'Apply StandardScaler (Feature Scaling)',
+        'pre.beforeafter': '📊 Before vs. After Preprocessing',
+        'model.header': '🤖 Modeling Sandbox',
+        'model.select': '🎯 Select Your Model',
+        'model.radio': 'Choose a classification model:',
+        'model.lr': 'Logistic Regression',
+        'model.knn': 'K-Nearest Neighbors (KNN)',
+        'model.knn.k': 'Select k (number of neighbors):',
+        'model.coeff': 'Feature Coefficients',
+        'model.decision.header': '🎨 Decision Boundary Visualization',
+        'model.decision.info': 'Decision Boundary: The line/surface separating classes. For visualization, we use only the first two features.',
+        'tab.train': 'Training Data',
+        'tab.test': 'Test Data',
+        'eval.header': '📊 Model Evaluation & Interpretation',
+        'eval.split': '🔀 Train-Test Split',
+        'metric.train.samples': 'Training Samples',
+        'metric.train.pct': 'Training %',
+        'metric.test.samples': 'Test Samples',
+        'metric.test.pct': 'Test %',
+        'eval.performance': '🎯 Model Performance',
+        'metric.train.acc': 'Training Accuracy',
+        'metric.test.acc': 'Test Accuracy',
+        'metric.overfit.gap': 'Overfit Gap',
+        'cm.header': '🔢 Confusion Matrix',
+        'label.yes': 'Yes',
+        'label.no': 'No',
+        'label.age': 'Age',
+        'label.income': 'Income',
+        'legend.subscribed': 'Subscribed',
+        'legend.no': 'No',
+        'legend.yes': 'Yes',
+    },
+    'fa': {
+        'page.title': 'آموزش یادگیری نظارت‌شده',
+        'nav.title': '📚 ناوبری',
+        'nav.intro': 'مقدمه',
+        'nav.eda': 'تحلیل اکتشافی داده',
+        'nav.preproc': 'پیش‌پردازش داده',
+        'nav.model': 'محیط مدل‌سازی',
+        'nav.eval': 'ارزیابی و تفسیر',
+        'lang.label': 'زبان',
+        'lang.en': 'انگلیسی',
+        'lang.fa': 'فارسی',
+        'title.main': '🎓 پلتفرم تعاملی آموزش یادگیری ماشین',
+        'subtitle.main': 'یادگیری یادگیری نظارت‌شده با بصری‌سازی تعاملی',
+        'intro.header': '📖 مقدمه‌ای بر یادگیری نظارت‌شده',
+        'intro.supervised.h3': 'یادگیری نظارت‌شده چیست؟',
+        'intro.supervised.p': 'در یادگیری نظارت‌شده، مدل با داده‌های برچسب‌دار آموزش می‌بیند تا برای داده‌های جدید برچسب پیش‌بینی کند.',
+        'intro.classification.h3': 'رده‌بندی چیست؟',
+        'intro.classification.p': 'رده‌بندی نوعی کار یادگیری نظارت‌شده برای پیش‌بینی خروجی‌های دسته‌ای (مثل بله/خیر) است. اینجا پیش‌بینی می‌کنیم آیا فرد مشترک می‌شود یا نه.',
+        'intro.tf': '🎯 متغیر هدف در برابر ویژگی‌ها',
+        'intro.target.title': 'متغیر هدف (برچسب)',
+        'intro.target.desc': 'متغیر هدف چیزی است که می‌خواهیم پیش‌بینی کنیم. در این داده‌ها: اشتراک (بله/خیر).',
+        'intro.features.title': 'ویژگی‌ها (متغیرهای مستقل)',
+        'intro.features.desc': 'ویژگی‌ها ورودی‌هایی برای پیش‌بینی هستند: سن، درآمد، تحصیلات، جنسیت.',
+        'intro.preview': '📊 پیش‌نمایش داده',
+        'intro.dataset.overview': 'نمای کلی مجموعه‌داده:',
+        'btn.apply_preproc': '🚀 اعمال پیش‌پردازش',
+        'btn.train_model': '🎯 آموزش مدل',
+        'warn.need.preproc': '⚠️ لطفاً ابتدا پیش‌پردازش داده را انجام دهید!',
+        'info.how.preproc': "به بخش 'پیش‌پردازش داده' بروید و دکمه 'اعمال پیش‌پردازش' را بزنید.",
+        'eda.header': '🔍 تحلیل اکتشافی داده (EDA)',
+        'eda.summary': '📈 آمار خلاصه',
+        'eda.numeric': 'ویژگی‌های عددی',
+        'eda.categorical': 'ویژگی‌های رده‌ای',
+        'eda.missing.header': '🔴 تحلیل مقادیر گمشده',
+        'eda.missing.xlabel': 'درصد مقدار گمشده (%)',
+        'eda.distributions': '📊 توزیع داده',
+        'tab.numeric': 'ویژگی‌های عددی',
+        'tab.categorical': 'ویژگی‌های رده‌ای',
+        'tab.target': 'توزیع هدف',
+        'chart.age': 'سن',
+        'chart.income': 'درآمد',
+        'chart.education': 'سطح تحصیلات',
+        'chart.gender': 'جنسیت',
+        'chart.subscribed': 'توزیع اشتراک',
+        'metric.subscribed.yes': 'مشترک (بله)',
+        'metric.subscribed.no': 'غیرمشترک (خیر)',
+        'class.balance': 'نسبت توازن کلاس:',
+        'pre.header': '🔧 نمایش پیش‌پردازش داده',
+        'pre.missing': '1️⃣ مدیریت مقادیر گمشده',
+        'pre.numeric': 'ویژگی‌های عددی',
+        'pre.numeric.radio': 'روش جانشینی برای سن و درآمد:',
+        'pre.numeric.mean': 'میانگین',
+        'pre.numeric.median': 'میانه',
+        'pre.categorical': 'ویژگی‌های رده‌ای',
+        'pre.categorical.radio': 'روش جانشینی برای تحصیلات:',
+        'pre.categorical.mode': 'مد (پراستفاده‌ترین)',
+        'pre.categorical.unknown': "جایگزین ('نامشخص')",
+        'pre.encoding': '2️⃣ کدگذاری متغیرهای رده‌ای',
+        'pre.encoding.radio': 'روش کدگذاری را انتخاب کنید:',
+        'pre.encoding.onehot': 'وان-هات (Dummy)',
+        'pre.encoding.label': 'لیبل',
+        'pre.scaling': '3️⃣ مقیاس‌بندی ویژگی‌ها',
+        'pre.scaling.checkbox': 'اعمال استانداردسازی (StandardScaler)',
+        'pre.beforeafter': '📊 قبل و بعد از پیش‌پردازش',
+        'model.header': '🤖 محیط مدل‌سازی',
+        'model.select': '🎯 انتخاب مدل',
+        'model.radio': 'یک مدل رده‌بندی انتخاب کنید:',
+        'model.lr': 'رگرسیون لجستیک',
+        'model.knn': 'نزدیک‌ترین همسایه‌ها (KNN)',
+        'model.knn.k': 'k (تعداد همسایه‌ها) را انتخاب کنید:',
+        'model.coeff': 'ضرایب ویژگی',
+        'model.decision.header': '🎨 بصری‌سازی مرز تصمیم',
+        'model.decision.info': 'مرز تصمیم: حدّی که کلاس‌ها را جدا می‌کند. برای نمایش، فقط دو ویژگی اول را استفاده می‌کنیم.',
+        'tab.train': 'دادهٔ آموزش',
+        'tab.test': 'دادهٔ آزمون',
+        'eval.header': '📊 ارزیابی و تفسیر مدل',
+        'eval.split': '🔀 تفکیک آموزش/آزمون',
+        'metric.train.samples': 'نمونه‌های آموزش',
+        'metric.train.pct': '٪ آموزش',
+        'metric.test.samples': 'نمونه‌های آزمون',
+        'metric.test.pct': '٪ آزمون',
+        'eval.performance': '🎯 کارایی مدل',
+        'metric.train.acc': 'دقت آموزش',
+        'metric.test.acc': 'دقت آزمون',
+        'metric.overfit.gap': 'شکاف بیش‌برازش',
+        'cm.header': '🔢 ماتریس درهم‌ریختگی',
+        'label.yes': 'بله',
+        'label.no': 'خیر',
+        'label.age': 'سن',
+        'label.income': 'درآمد',
+        'legend.subscribed': 'اشتراک',
+        'legend.no': 'خیر',
+        'legend.yes': 'بله',
+    }
+}
+
+def get_lang():
+    return st.session_state.get('lang', 'en')
+
+def tr(key: str) -> str:
+    lang = get_lang()
+    return TRANSLATIONS.get(lang, TRANSLATIONS['en']).get(key, TRANSLATIONS['en'].get(key, key))
+
 # Set page configuration
 st.set_page_config(
     page_title="ML Education: Supervised Learning",
@@ -118,32 +319,54 @@ def plot_decision_boundary(X, y, model, feature_names, resolution=100):
     scatter = ax.scatter(X[:, 0], X[:, 1], c=y_numeric, cmap='RdYlBu', 
                         edgecolors='k', s=50, alpha=0.7)
     
-    ax.set_xlabel(feature_names[0], fontsize=12)
-    ax.set_ylabel(feature_names[1], fontsize=12)
+    # Localize axis labels when common names are used
+    name_map = {
+        'Age': tr('label.age'),
+        'Income': tr('label.income'),
+    }
+    x_label = name_map.get(feature_names[0], feature_names[0])
+    y_label = name_map.get(feature_names[1], feature_names[1])
+    ax.set_xlabel(x_label, fontsize=12)
+    ax.set_ylabel(y_label, fontsize=12)
     ax.set_title('Decision Boundary Visualization', fontsize=14, fontweight='bold')
     
     # Add legend
     legend_elements = [plt.Line2D([0], [0], marker='o', color='w', 
-                                  markerfacecolor='#67a9cf', markersize=10, label='No'),
+                                  markerfacecolor='#67a9cf', markersize=10, label=tr('legend.no')),
                       plt.Line2D([0], [0], marker='o', color='w', 
-                                  markerfacecolor='#ef8a62', markersize=10, label='Yes')]
-    ax.legend(handles=legend_elements, title='Subscribed')
+                                  markerfacecolor='#ef8a62', markersize=10, label=tr('legend.yes'))]
+    ax.legend(handles=legend_elements, title=tr('legend.subscribed'))
     
     plt.tight_layout()
     return fig
 
 # ==================== MAIN APP ====================
 def main():
-    st.title("🎓 Interactive Machine Learning Education Platform")
-    st.markdown("### Learn Supervised Learning Through Interactive Visualization")
+    st.title(tr('title.main'))
+    st.markdown(f"### {tr('subtitle.main')}")
     
-    # Sidebar navigation
-    st.sidebar.title("📚 Navigation")
-    section = st.sidebar.radio(
-        "Choose a section:",
-        ["Introduction", "Exploratory Data Analysis", "Data Preprocessing", 
-         "Modeling Sandbox", "Evaluation & Interpretation"]
-    )
+    # Sidebar language selector + navigation
+    st.sidebar.title(tr('nav.title'))
+    lang_display = st.sidebar.selectbox(tr('lang.label'), [TRANSLATIONS['en']['lang.en'], TRANSLATIONS['fa']['lang.fa']])
+    st.session_state.lang = 'fa' if 'فارسی' in lang_display else 'en'
+    if get_lang() == 'fa':
+        st.markdown("""
+        <style>
+        html, body, [class*='css'] { direction: rtl; }
+        .info-box { text-align: right; }
+        </style>
+        """, unsafe_allow_html=True)
+
+    nav_items = [
+        ('intro', tr('nav.intro')),
+        ('eda', tr('nav.eda')),
+        ('preproc', tr('nav.preproc')),
+        ('model', tr('nav.model')),
+        ('eval', tr('nav.eval')),
+    ]
+    nav_labels = [lbl for _, lbl in nav_items]
+    selected_label = st.sidebar.radio('', nav_labels)
+    section_key = next(k for k, v in nav_items if v == selected_label)
     
     # Generate dataset
     df = generate_dataset()
@@ -163,63 +386,46 @@ def main():
         st.session_state.feature_names = None
     
     # ==================== SECTION 1: INTRODUCTION ====================
-    if section == "Introduction":
-        st.header("📖 Introduction to Supervised Learning")
+    if section_key == "intro":
+        st.header(tr('intro.header'))
         
         st.markdown("""
         <div class="info-box">
-        <h3>What is Supervised Learning?</h3>
-        <p><span class="term">Supervised Learning</span> is a type of machine learning where we train 
-        a model using labeled data. This means we have examples where we already know the correct answer 
-        (the "label"), and we teach the computer to predict these labels for new, unseen data.</p>
+        <h3>{h3}</h3>
+        <p>{p}</p>
         </div>
-        """, unsafe_allow_html=True)
+        """.format(h3=tr('intro.supervised.h3'), p=tr('intro.supervised.p')), unsafe_allow_html=True)
         
         st.markdown("""
         <div class="info-box">
-        <h3>What is Classification?</h3>
-        <p><span class="term">Classification</span> is a supervised learning task where we predict 
-        categorical outcomes (like Yes/No, Cat/Dog, Spam/Not Spam). In our case, we're predicting 
-        whether a person will subscribe to a service.</p>
+        <h3>{h3}</h3>
+        <p>{p}</p>
         </div>
-        """, unsafe_allow_html=True)
+        """.format(h3=tr('intro.classification.h3'), p=tr('intro.classification.p')), unsafe_allow_html=True)
         
-        st.subheader("🎯 Target Variable vs. Features")
+        st.subheader(tr('intro.tf'))
         
         col1, col2 = st.columns(2)
         
         with col1:
             st.markdown("""
-            **Target Variable (Label)**
+            **{title}**
             
-            The <span class="term">Target Variable</span> is what we want to predict. 
-            It's also called the dependent variable or label.
-            
-            **In our dataset:**
-            - **Subscribed**: Yes or No (binary outcome)
-            
-            This is what our model will learn to predict.
-            """, unsafe_allow_html=True)
+            {desc}
+            """.format(title=tr('intro.target.title'), desc=tr('intro.target.desc')), unsafe_allow_html=True)
         
         with col2:
             st.markdown("""
-            **Features (Independent Variables)**
+            **{title}**
             
-            <span class="term">Features</span> are the input variables we use to make predictions. 
-            They're also called independent variables or predictors.
-            
-            **In our dataset:**
-            - **Age**: Person's age (numeric)
-            - **Income**: Annual income (numeric)
-            - **Education**: Education level (categorical)
-            - **Gender**: Male or Female (binary categorical)
-            """, unsafe_allow_html=True)
+            {desc}
+            """.format(title=tr('intro.features.title'), desc=tr('intro.features.desc')), unsafe_allow_html=True)
         
-        st.subheader("📊 Sample Data Preview")
+        st.subheader(tr('intro.preview'))
         st.dataframe(df.head(10), use_container_width=True)
         
         st.info(f"""
-        **Dataset Overview:**
+        **{tr('intro.dataset.overview')}**
         - Total samples: {len(df)}
         - Features: {', '.join(df.columns[:-1])}
         - Target: {df.columns[-1]}
@@ -227,22 +433,22 @@ def main():
         """)
     
     # ==================== SECTION 2: EDA ====================
-    elif section == "Exploratory Data Analysis":
-        st.header("🔍 Exploratory Data Analysis (EDA)")
+    elif section_key == "eda":
+        st.header(tr('eda.header'))
         
         info_tooltip("Exploratory Data Analysis (EDA)", 
                     "EDA is the process of analyzing and visualizing data to understand its main " +
                     "characteristics, patterns, and potential issues before building models.")
         
-        st.subheader("📈 Summary Statistics")
+        st.subheader(tr('eda.summary'))
         
         col1, col2 = st.columns(2)
         with col1:
-            st.markdown("**Numeric Features**")
+            st.markdown(f"**{tr('eda.numeric')}**")
             st.dataframe(df[['Age', 'Income']].describe())
         
         with col2:
-            st.markdown("**Categorical Features**")
+            st.markdown(f"**{tr('eda.categorical')}**")
             cat_summary = pd.DataFrame({
                 'Education': df['Education'].value_counts(),
                 'Gender': df['Gender'].value_counts(),
@@ -250,7 +456,7 @@ def main():
             })
             st.dataframe(cat_summary)
         
-        st.subheader("🔴 Missing Values Analysis")
+        st.subheader(tr('eda.missing.header'))
         
         missing_data = df.isnull().sum()
         missing_pct = (missing_data / len(df) * 100).round(2)
@@ -268,8 +474,8 @@ def main():
             missing_df[missing_df['Missing Count'] > 0]['Percentage (%)'].plot(
                 kind='barh', ax=ax, color='coral'
             )
-            ax.set_xlabel('Percentage Missing (%)')
-            ax.set_title('Missing Values by Feature')
+            ax.set_xlabel(tr('eda.missing.xlabel'))
+            ax.set_title(tr('eda.missing.header'))
             st.pyplot(fig)
         
         st.info("""
@@ -277,22 +483,22 @@ def main():
         We need to handle them appropriately before training our model.
         """)
         
-        st.subheader("📊 Data Distributions")
+        st.subheader(tr('eda.distributions'))
         
-        tab1, tab2, tab3 = st.tabs(["Numeric Features", "Categorical Features", "Target Distribution"])
+        tab1, tab2, tab3 = st.tabs([tr('tab.numeric'), tr('tab.categorical'), tr('tab.target')])
         
         with tab1:
             fig, axes = plt.subplots(1, 2, figsize=(12, 4))
             
             axes[0].hist(df['Age'].dropna(), bins=30, color='skyblue', edgecolor='black')
-            axes[0].set_xlabel('Age')
+            axes[0].set_xlabel(tr('chart.age'))
             axes[0].set_ylabel('Frequency')
-            axes[0].set_title('Age Distribution')
+            axes[0].set_title(tr('chart.age'))
             
             axes[1].hist(df['Income'].dropna(), bins=30, color='lightgreen', edgecolor='black')
-            axes[1].set_xlabel('Income')
+            axes[1].set_xlabel(tr('chart.income'))
             axes[1].set_ylabel('Frequency')
-            axes[1].set_title('Income Distribution')
+            axes[1].set_title(tr('chart.income'))
             
             plt.tight_layout()
             st.pyplot(fig)
@@ -301,15 +507,15 @@ def main():
             fig, axes = plt.subplots(1, 2, figsize=(12, 4))
             
             df['Education'].value_counts().plot(kind='bar', ax=axes[0], color='orange')
-            axes[0].set_xlabel('Education Level')
+            axes[0].set_xlabel(tr('chart.education'))
             axes[0].set_ylabel('Count')
-            axes[0].set_title('Education Distribution')
+            axes[0].set_title(tr('chart.education'))
             axes[0].tick_params(axis='x', rotation=45)
             
             df['Gender'].value_counts().plot(kind='bar', ax=axes[1], color='purple')
-            axes[1].set_xlabel('Gender')
+            axes[1].set_xlabel(tr('chart.gender'))
             axes[1].set_ylabel('Count')
-            axes[1].set_title('Gender Distribution')
+            axes[1].set_title(tr('chart.gender'))
             axes[1].tick_params(axis='x', rotation=0)
             
             plt.tight_layout()
@@ -323,61 +529,76 @@ def main():
                 df['Subscribed'].value_counts().plot(kind='pie', ax=ax, autopct='%1.1f%%',
                                                      colors=['#ff9999', '#66b3ff'])
                 ax.set_ylabel('')
-                ax.set_title('Subscription Distribution')
+                ax.set_title(tr('chart.subscribed'))
                 st.pyplot(fig)
             
             with col2:
                 st.markdown("### Target Variable Balance")
                 target_counts = df['Subscribed'].value_counts()
-                st.metric("Subscribed (Yes)", target_counts.get('Yes', 0))
-                st.metric("Not Subscribed (No)", target_counts.get('No', 0))
+                st.metric(tr('metric.subscribed.yes'), target_counts.get('Yes', 0))
+                st.metric(tr('metric.subscribed.no'), target_counts.get('No', 0))
                 
                 balance_ratio = min(target_counts.values) / max(target_counts.values)
                 st.info(f"""
-                **Class Balance Ratio:** {balance_ratio:.2f}
+                **{tr('class.balance')}** {balance_ratio:.2f}
                 
                 A balanced dataset (ratio close to 1.0) helps models learn both classes equally well.
                 """)
     
     # ==================== SECTION 3: PREPROCESSING ====================
-    elif section == "Data Preprocessing":
-        st.header("🔧 Data Preprocessing Demo")
+    elif section_key == "preproc":
+        st.header(tr('pre.header'))
         
         info_tooltip("Data Preprocessing",
                     "Data preprocessing involves transforming raw data into a clean, formatted dataset " +
                     "that machine learning algorithms can understand and process effectively.")
         
-        st.subheader("1️⃣ Handling Missing Values")
+        st.subheader(tr('pre.missing'))
         
         col1, col2 = st.columns(2)
         
         with col1:
-            st.markdown("**Numeric Features**")
-            numeric_strategy = st.radio(
-                "Imputation strategy for Age & Income:",
-                ["Mean Imputation", "Median Imputation"],
+            st.markdown(f"**{tr('pre.numeric')}**")
+            numeric_options = {
+                'Mean Imputation': tr('pre.numeric.mean'),
+                'Median Imputation': tr('pre.numeric.median'),
+            }
+            numeric_choice_label = st.radio(
+                tr('pre.numeric.radio'),
+                list(numeric_options.values()),
                 help="Mean: Replace missing values with the average. Median: Replace with the middle value."
             )
+            numeric_strategy = next(k for k, v in numeric_options.items() if v == numeric_choice_label)
             
             info_tooltip("Imputation",
                         "Imputation is the process of replacing missing values with substituted values. " +
                         "Mean imputation uses the average, while median is more robust to outliers.")
         
         with col2:
-            st.markdown("**Categorical Features**")
-            categorical_strategy = st.radio(
-                "Imputation strategy for Education:",
-                ["Mode (Most Frequent)", "Placeholder ('Unknown')"],
+            st.markdown(f"**{tr('pre.categorical')}**")
+            categorical_options = {
+                "Mode (Most Frequent)": tr('pre.categorical.mode'),
+                "Placeholder ('Unknown')": tr('pre.categorical.unknown'),
+            }
+            categorical_choice_label = st.radio(
+                tr('pre.categorical.radio'),
+                list(categorical_options.values()),
                 help="Mode: Replace with the most common value. Placeholder: Use a special 'Unknown' category."
             )
+            categorical_strategy = next(k for k, v in categorical_options.items() if v == categorical_choice_label)
         
-        st.subheader("2️⃣ Encoding Categorical Variables")
+        st.subheader(tr('pre.encoding'))
         
-        encoding_method = st.radio(
-            "Select encoding method:",
-            ["One-Hot Encoding", "Label Encoding"],
+        encoding_options = {
+            'One-Hot Encoding': tr('pre.encoding.onehot'),
+            'Label Encoding': tr('pre.encoding.label'),
+        }
+        encoding_choice_label = st.radio(
+            tr('pre.encoding.radio'),
+            list(encoding_options.values()),
             help="Choose how to convert categorical variables to numbers."
         )
+        encoding_method = next(k for k, v in encoding_options.items() if v == encoding_choice_label)
         
         col1, col2 = st.columns(2)
         with col1:
@@ -390,10 +611,10 @@ def main():
                         "Assigns a unique integer to each category. Example: " +
                         "High School → 0, Bachelor → 1, Master → 2")
         
-        st.subheader("3️⃣ Feature Scaling")
+        st.subheader(tr('pre.scaling'))
         
         apply_scaling = st.checkbox(
-            "Apply StandardScaler (Feature Scaling)",
+            tr('pre.scaling.checkbox'),
             value=True,
             help="Standardize features by removing the mean and scaling to unit variance"
         )
@@ -403,7 +624,7 @@ def main():
                     "This ensures all features contribute equally to the model, especially important for " +
                     "distance-based algorithms like KNN.")
         
-        if st.button("🚀 Apply Preprocessing", type="primary"):
+        if st.button(tr('btn.apply_preproc'), type="primary"):
             with st.spinner("Processing data..."):
                 # Create a copy
                 df_processed = df.copy()
@@ -463,7 +684,7 @@ def main():
                 st.success("✅ Preprocessing completed successfully!")
         
         if st.session_state.preprocessed_df is not None:
-            st.subheader("📊 Before vs. After Preprocessing")
+            st.subheader(tr('pre.beforeafter'))
             
             tab1, tab2 = st.tabs(["Data Comparison", "Visualization"])
             
@@ -519,29 +740,28 @@ def main():
                     """)
     
     # ==================== SECTION 4: MODELING ====================
-    elif section == "Modeling Sandbox":
-        st.header("🤖 Modeling Sandbox")
+    elif section_key == "model":
+        st.header(tr('model.header'))
         
         if st.session_state.X_train is None:
-            st.warning("⚠️ Please complete Data Preprocessing first!")
-            st.info("Navigate to 'Data Preprocessing' section and click 'Apply Preprocessing' button.")
+            st.warning(tr('warn.need.preproc'))
+            st.info(tr('info.how.preproc'))
             return
         
         info_tooltip("Machine Learning Model",
                     "A machine learning model is an algorithm that learns patterns from data to make predictions. " +
                     "Different models use different strategies to find these patterns.")
         
-        st.subheader("🎯 Select Your Model")
+        st.subheader(tr('model.select'))
         
-        model_type = st.radio(
-            "Choose a classification model:",
-            ["Logistic Regression", "K-Nearest Neighbors (KNN)"]
-        )
+        model_options = {'lr': tr('model.lr'), 'knn': tr('model.knn')}
+        model_label = st.radio(tr('model.radio'), list(model_options.values()))
+        model_type = next(k for k, v in model_options.items() if v == model_label)
         
         col1, col2 = st.columns(2)
         
         with col1:
-            if model_type == "Logistic Regression":
+            if model_type == "lr":
                 st.markdown("""
                 **Logistic Regression**
                 
@@ -577,9 +797,9 @@ def main():
         
         with col2:
             k_value = 5  # Default value
-            if model_type == "K-Nearest Neighbors (KNN)":
+            if model_type == "knn":
                 k_value = st.slider(
-                    "Select k (number of neighbors):",
+                    tr('model.knn.k'),
                     min_value=1,
                     max_value=50,
                     value=5,
@@ -591,10 +811,10 @@ def main():
                             "how many neighbors vote on the classification. Small k → more complex (may overfit), " +
                             "Large k → smoother decision boundary (may underfit).")
         
-        if st.button("🎯 Train Model", type="primary"):
+        if st.button(tr('btn.train_model'), type="primary"):
             with st.spinner("Training model..."):
                 # Train model
-                if model_type == "Logistic Regression":
+                if model_type == "lr":
                     model = LogisticRegression(random_state=42, max_iter=1000)
                 else:
                     model = KNeighborsClassifier(n_neighbors=k_value)
@@ -618,7 +838,7 @@ def main():
         if hasattr(st.session_state, 'model'):
             st.subheader("📊 Model Insights")
             
-            if st.session_state.model_type == "Logistic Regression":
+            if st.session_state.model_type == "lr":
                 st.markdown("**Feature Coefficients**")
                 
                 coefficients = st.session_state.model.coef_[0]
@@ -646,26 +866,23 @@ def main():
                 while negative coefficients decrease it. Larger magnitude = stronger influence.
                 """)
             
-            st.subheader("🎨 Decision Boundary Visualization")
+            st.subheader(tr('model.decision.header'))
             
-            st.info("""
-            **Decision Boundary:** The line/surface that separates different classes in the feature space. 
-            For visualization, we use only 2 features (typically the first two).
-            """)
+            st.info(tr('model.decision.info'))
             
             # Use first two features for visualization
             X_train_2d = st.session_state.X_train.iloc[:, :2].values
             X_test_2d = st.session_state.X_test.iloc[:, :2].values
             
             # Train a 2D model for visualization
-            if st.session_state.model_type == "Logistic Regression":
+            if st.session_state.model_type == "lr":
                 model_2d = LogisticRegression(random_state=42, max_iter=1000)
             else:
                 model_2d = KNeighborsClassifier(n_neighbors=k_value)
             
             model_2d.fit(X_train_2d, st.session_state.y_train)
             
-            tab1, tab2 = st.tabs(["Training Data", "Test Data"])
+            tab1, tab2 = st.tabs([tr('tab.train'), tr('tab.test')])
             
             with tab1:
                 fig = plot_decision_boundary(
@@ -693,31 +910,31 @@ def main():
             """)
     
     # ==================== SECTION 5: EVALUATION ====================
-    elif section == "Evaluation & Interpretation":
-        st.header("📊 Model Evaluation & Interpretation")
+    elif section_key == "eval":
+        st.header(tr('eval.header'))
         
         if not hasattr(st.session_state, 'model'):
             st.warning("⚠️ Please train a model first!")
             st.info("Navigate to 'Modeling Sandbox' section and train a model.")
             return
         
-        st.subheader("🔀 Train-Test Split")
+        st.subheader(tr('eval.split'))
         
         col1, col2 = st.columns(2)
         with col1:
-            st.metric("Training Samples", len(st.session_state.X_train))
-            st.metric("Training %", "80%")
+            st.metric(tr('metric.train.samples'), len(st.session_state.X_train))
+            st.metric(tr('metric.train.pct'), "80%")
         
         with col2:
-            st.metric("Test Samples", len(st.session_state.X_test))
-            st.metric("Test %", "20%")
+            st.metric(tr('metric.test.samples'), len(st.session_state.X_test))
+            st.metric(tr('metric.test.pct'), "20%")
         
         info_tooltip("Train-Test Split",
                     "We split data into training and test sets. The model learns from the training set " +
                     "and is evaluated on the test set (data it hasn't seen). This helps us assess how well " +
                     "the model generalizes to new data.")
         
-        st.subheader("🎯 Model Performance")
+        st.subheader(tr('eval.performance'))
         
         train_acc = accuracy_score(st.session_state.y_train, st.session_state.y_pred_train)
         test_acc = accuracy_score(st.session_state.y_test, st.session_state.y_pred_test)
@@ -725,14 +942,14 @@ def main():
         col1, col2, col3 = st.columns(3)
         
         with col1:
-            st.metric("Training Accuracy", f"{train_acc:.2%}")
+            st.metric(tr('metric.train.acc'), f"{train_acc:.2%}")
         
         with col2:
-            st.metric("Test Accuracy", f"{test_acc:.2%}")
+            st.metric(tr('metric.test.acc'), f"{test_acc:.2%}")
         
         with col3:
             overfitting_gap = train_acc - test_acc
-            st.metric("Overfit Gap", f"{overfitting_gap:.2%}",
+            st.metric(tr('metric.overfit.gap'), f"{overfitting_gap:.2%}",
                      delta=f"{'High' if overfitting_gap > 0.1 else 'Low'} overfitting",
                      delta_color="inverse")
         
@@ -741,7 +958,7 @@ def main():
                     "(Correct Predictions) / (Total Predictions). While intuitive, accuracy can be " +
                     "misleading with imbalanced datasets.")
         
-        st.subheader("🔢 Confusion Matrix")
+        st.subheader(tr('cm.header'))
         
         tab1, tab2 = st.tabs(["Test Set", "Training Set"])
         
@@ -754,8 +971,8 @@ def main():
             with col1:
                 fig, ax = plt.subplots(figsize=(6, 5))
                 sns.heatmap(cm_test, annot=True, fmt='d', cmap='Blues', 
-                           xticklabels=['No', 'Yes'],
-                           yticklabels=['No', 'Yes'],
+                           xticklabels=[tr('label.no'), tr('label.yes')],
+                           yticklabels=[tr('label.no'), tr('label.yes')],
                            ax=ax, cbar_kws={'label': 'Count'})
                 ax.set_ylabel('True Label')
                 ax.set_xlabel('Predicted Label')
@@ -789,8 +1006,8 @@ def main():
             
             fig, ax = plt.subplots(figsize=(6, 5))
             sns.heatmap(cm_train, annot=True, fmt='d', cmap='Greens',
-                       xticklabels=['No', 'Yes'],
-                       yticklabels=['No', 'Yes'],
+                       xticklabels=[tr('label.no'), tr('label.yes')],
+                       yticklabels=[tr('label.no'), tr('label.yes')],
                        ax=ax, cbar_kws={'label': 'Count'})
             ax.set_ylabel('True Label')
             ax.set_xlabel('Predicted Label')
